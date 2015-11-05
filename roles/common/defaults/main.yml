@@ -1,0 +1,13 @@
+---
+
+common_packages:
+  - ag
+  - gcc
+  - git
+  - htop
+  - make
+  - mosh
+  - nmap
+  - tmux
+
+common_fasd_url: 'https://github.com/clvv/fasd/tarball/1.0.1'

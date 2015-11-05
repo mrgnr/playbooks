@@ -1,0 +1,11 @@
+---
+
+- name: Install common packages
+  apt: name={{ item }} state=latest
+  with_items: common_packages
+
+- name: Download fasd
+  unarchive: url={{ common_fasd_url }} dest='/tmp/fasd' copy=no
+
+- name: Install fasd
+  shell: make install chdir='/tmp/fasd'
