@@ -1,0 +1,13 @@
+---
+
+- name: Install zsh
+  apt: name=zsh state=latest
+
+- name: Make zsh the default shell
+  shell: chsh -s $(which zsh)
+
+- name: Install Oh My Zsh
+  shell: curl -L {{ shell_ohmyzsh_url }} | /usr/bin/zsh
+
+- name: Install guake
+  apt: name=guake state=latest
