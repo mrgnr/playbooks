@@ -1,0 +1,11 @@
+---
+
+- name: Configure dev machine
+  hosts: all
+  sudo: True
+  gather_facts: True
+  roles:
+    - common
+    - python
+    - shell
+    - vim
