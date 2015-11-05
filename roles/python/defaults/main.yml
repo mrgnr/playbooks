@@ -1,0 +1,12 @@
+---
+
+python_2_global_packages:
+  - ipython
+  - virtualenv
+  - virtualenvwrapper
+  - ansible
+
+python_3_global_packages:
+  - ipython
+  - virtualenv
+  - virtualenvwrapper
