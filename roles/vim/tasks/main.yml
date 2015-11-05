@@ -1,0 +1,42 @@
+---
+
+- name: Install vim
+  apt: name=vim-gnome state=present
+
+- name: Copy vimrc
+  copy: src=vimrc dest='{{ vim_user_home }}/.vimrc'
+
+- name: Install Vundle plugin manager
+  git: >
+    repo='https://github.com/VundleVim/Vundle.vim.git'
+    dest='{{ vim_user_home }}/.vim/bundle/Vundle.vim'
+
+- name: Install plugins
+  command: vim +PluginInstall +qall
+
+- name: Add neovim repository
+  apt_repository: >
+    repo='ppa:neovim-ppa/unstable'
+    state=present
+    update_cache=yes
+
+- name: Install neovim
+  apt: name=neovim state=present
+
+- name: Install neovim module for Python 2
+  pip: name=neovim executable=pip2
+
+- name: Install neovim module for Python 3
+  pip: name=neovim executable=pip3
+
+- name: Link neovim config directory to vim config directory
+  file: >
+    src='{{ vim_user_home }}/.vim'
+    dest='{{ vim_user_home }}/.config/nvim'
+    state=link
+
+- name: Link nvim config file to vimrc
+  file: >
+    src='{{ vim_user_home }}/.vimrc'
+    dest='{{ vim_user_home }}/.config/nvim/init.vim'
+    state=link

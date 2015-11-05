@@ -1,0 +1,94 @@
+set nocompatible
+
+" Install plugins with Vundle
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'gmarik/Vundle.vim'
+Plugin 'scrooloose/nerdtree'
+Plugin 'jistr/vim-nerdtree-tabs'
+Plugin 'scrooloose/syntastic'
+Plugin 'majutsushi/tagbar'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'tpope/vim-fugitive'
+Plugin 'chase/vim-ansible-yaml'
+Plugin 'flazz/vim-colorschemes'
+Plugin 'Lokaltog/vim-powerline'
+Plugin 'kien/ctrlp.vim'
+Plugin 'rking/ag.vim'
+Plugin 'gokcehan/vim-yacom'
+Plugin 'Yggdroot/indentLine'
+Plugin 'mattn/gist-vim'
+Plugin 'mattn/webapi-vim'
+call vundle#end()
+filetype plugin indent on
+
+" General options
+syntax on
+colorscheme wombat256mod
+set mouse=a
+set number
+set showcmd
+set noswapfile
+set nowrap
+set laststatus=2
+set t_Co=256
+
+" Set leader
+let mapleader = ","
+
+" Enable smart indentation with 4 space tabs
+set smartindent
+set shiftround
+set shiftwidth=4
+set tabstop=4
+set expandtab
+set smarttab
+
+" Search options
+set incsearch
+set ignorecase
+set smartcase
+set hlsearch
+
+" Switch between windows
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" When searching, center on next find and open fold
+nnoremap n nzzzv
+nnoremap N Nzzzv
+
+" Don't move on *
+nnoremap * *<c-o>
+
+" Edit .vimrc
+nnoremap <leader>ev :split $MYVIMRC<cr>
+
+" Source .vimrc
+nnoremap <leader>sv :source $MYVIMRC<cr>
+
+" Ag plugin
+let g:ag_working_path_mode="r"
+let g:ag_highlight=1
+nnoremap <leader>a lb"zyw :Ag! <C-r>z<cr>
+
+" Ctrlp plugin
+nnoremap <C-p> :CtrlP<cr>
+
+" Gist plugin
+let g:gist_post_private = 1
+
+" NerdTree plugin
+nnoremap <F7> :NERDTreeTabsToggle<CR>
+
+" Syntastic plugin
+let g:syntastic_python_python_exec = '/usr/bin/python3'
+let g:syntastic_c_compiler = 'clang'
+let g:syntastic_python_checkers=['pep8']
+let g:syntastic_check_on_open=1
+
+" Tagbar plugin
+nnoremap <F8> :TagbarToggle<CR>
