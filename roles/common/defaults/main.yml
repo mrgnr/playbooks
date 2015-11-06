@@ -7,7 +7,10 @@ common_packages:
   - htop
   - make
   - mosh
+  - nload
   - nmap
   - tmux
+  - tree
+  - vnstat
 
 common_fasd_url: 'https://github.com/clvv/fasd/tarball/1.0.1'
