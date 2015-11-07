@@ -4,15 +4,18 @@
   apt: name=vim-gnome state=present
 
 - name: Copy vimrc
+  sudo: no
   copy: src=vimrc dest='{{ vim_user_home }}/.vimrc'
 
 - name: Install Vundle plugin manager
+  sudo: no
   git: >
     repo='https://github.com/VundleVim/Vundle.vim.git'
     dest='{{ vim_user_home }}/.vim/bundle/Vundle.vim'
 
-- name: Install plugins
-  command: vim +PluginInstall +qall
+#- name: Install plugins
+#  sudo: no
+#  command: vim +PluginInstall +qall
 
 - name: Add neovim repository
   apt_repository: >
@@ -30,12 +33,14 @@
   pip: name=neovim executable=pip3
 
 - name: Link neovim config directory to vim config directory
+  sudo: no
   file: >
     src='{{ vim_user_home }}/.vim'
     dest='{{ vim_user_home }}/.config/nvim'
     state=link
 
 - name: Link nvim config file to vimrc
+  sudo: no
   file: >
     src='{{ vim_user_home }}/.vimrc'
     dest='{{ vim_user_home }}/.config/nvim/init.vim'

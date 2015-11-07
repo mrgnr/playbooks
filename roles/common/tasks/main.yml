@@ -5,7 +5,12 @@
   with_items: common_packages
 
 - name: Download fasd
-  unarchive: url={{ common_fasd_url }} dest='/tmp/fasd' copy=no
+  get_url: url={{ common_fasd_url }} dest='/tmp/fasd.tar.gz'
+
+- name: Unarchive fasd
+  unarchive: src='/tmp/fasd.tar.gz' dest='/tmp' copy=no
 
 - name: Install fasd
-  shell: make install chdir='/tmp/fasd'
+  shell: >
+    make install chdir='/tmp/{{ common_fasd_dir }}'
+    creates=/usr/local/bin/fasd

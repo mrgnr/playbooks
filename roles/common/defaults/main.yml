@@ -1,7 +1,7 @@
 ---
 
 common_packages:
-  - ag
+  - silversearcher-ag
   - gcc
   - git
   - htop
@@ -13,4 +13,6 @@ common_packages:
   - tree
   - vnstat
 
+common_fasd_release_hash: '4822024'
 common_fasd_url: 'https://github.com/clvv/fasd/tarball/1.0.1'
+common_fasd_dir: 'clvv-fasd-{{ common_fasd_release_hash }}'

@@ -4,9 +4,10 @@
   apt: name=zsh state=latest
 
 - name: Make zsh the default shell
-  shell: chsh -s $(which zsh)
+  shell: chsh -s $(which zsh) {{ ansible_env.SUDO_USER }}
 
 - name: Install Oh My Zsh
+  sudo: no
   shell: curl -L {{ shell_ohmyzsh_url }} | /usr/bin/zsh
 
 - name: Install guake
