@@ -11,3 +11,8 @@ python_3_global_packages:
   - virtualenv
   - virtualenvwrapper
   - httpie
+
+python_user: '{{ ansible_env.SUDO_USER }}'
+python_user_home: '/home/{{ python_user }}'
+python_shell_rc_file: '{{ python_user_home }}/.bashrc'
+python_virtualenv_dir: '{{ python_user_home }}/.virtualenvs'

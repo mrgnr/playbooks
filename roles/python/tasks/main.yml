@@ -21,3 +21,16 @@
 - name: Install global packages for Python 3
   pip: name={{ item }} executable=pip3
   with_items: python_3_global_packages
+
+- name: Set virtualenv directory
+  lineinfile: >
+    dest='{{ python_shell_rc_file }}'
+    regexp='^export WORKON_HOME='
+    line='export WORKON_HOME={{ python_virtualenv_dir }}'
+    state=present
+
+- name: Source virtualenvwrapper script
+  lineinfile: >
+    dest='{{ python_shell_rc_file }}'
+    line='source /usr/local/bin/virtualenvwrapper.sh'
+    state=present
