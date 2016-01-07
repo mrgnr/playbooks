@@ -12,6 +12,7 @@ common_packages:
   - tmux
   - tree
   - vnstat
+  - xsel
 
 common_fasd_release_hash: '4822024'
 common_fasd_url: 'https://github.com/clvv/fasd/tarball/1.0.1'
