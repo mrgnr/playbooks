@@ -1,7 +1,7 @@
 ---
 
 common_packages:
-  - silversearcher-ag
+  - exuberant-ctags
   - gcc
   - git
   - htop
@@ -9,6 +9,7 @@ common_packages:
   - mosh
   - nload
   - nmap
+  - silversearcher-ag
   - tmux
   - tree
   - vnstat
