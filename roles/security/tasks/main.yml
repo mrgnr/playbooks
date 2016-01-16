@@ -1,0 +1,82 @@
+---
+
+- name: Update apt cache
+  apt: update_cache=yes cache_valid_time=3600
+  tags: ['security', 'security:fail2ban', 'security:ufw']
+
+- name: Install UFW
+  apt: name=ufw state=latest
+  tags: ['security', 'security:ufw']
+
+- name: Open SSH port and enable rate limiting
+  ufw: rule=limit port={{ security_ssh_port }}
+  tags: ['security', 'security:ssh', 'security:ufw']
+
+- name: Enable firewall
+  ufw: state=enabled logging=on
+  tags: ['security', 'security:ufw']
+
+- name: Install fail2ban
+  apt: name=fail2ban state=latest
+  tags: ['security', 'security:fail2ban']
+
+- name: Copy fail2ban configuration
+  template: src=jail.local.j2 dest=/etc/fail2ban/jail.local
+  tags: ['security', 'security:fail2ban']
+
+- name: Restart fail2ban
+  service: name=fail2ban state=restarted
+  tags: ['security', 'security:fail2ban']
+
+- name: Create SSH user with sudo permission
+  user: name="{{ security_ssh_user }}" groups=sudo shell=/bin/bash
+  when: security_ssh_add_user
+  tags: ['security', 'security:ssh']
+
+- name: Allow user to sudo without a password
+  lineinfile: >
+    dest=/etc/sudoers
+    line="{{ security_ssh_user }} ALL=(ALL) NOPASSWD: ALL"
+    state=present
+    validate='visudo -cf %s'
+  tags: ['security', 'security:ssh']
+
+- name: Add SSH pubkey
+  authorized_key: >
+    user="{{ security_ssh_user }}"
+    key="{{ lookup('file', security_ssh_key_path) }}"
+  when: security_ssh_add_key
+  tags: ['security', 'security:ssh']
+
+- name: Disable SSH root login
+  lineinfile: >
+    dest=/etc/ssh/sshd_config
+    regexp="^PermitRootLogin"
+    line="PermitRootLogin no"
+    state=present
+  tags: ['security', 'security:ssh']
+
+- name: Disable SSH password authentication
+  lineinfile: 
+    dest=/etc/ssh/sshd_config
+    regexp="^PasswordAuthentication"
+    line="PasswordAuthentication no"
+    state=present
+  tags: ['security', 'security:ssh']
+
+- name: Restart SSH daemon
+  service: name=ssh state=restarted
+  tags: ['security', 'security:ssh']
+
+# Workaround for bug in Ubuntu 14.04
+#- name: Restart SSH daemon
+#  shell: service ssh restart
+#  tags: ['security', 'security:ssh']
+
+- name: Install package for automatic updates
+  apt: name=unattended-upgrades state=latest
+  tags: ['security', 'security:updates']
+
+- name: Configure updates
+  template: src=20auto-upgrades dest=/etc/apt/apt.conf.d/20auto-upgrades
+  tags: ['security', 'security:updates']

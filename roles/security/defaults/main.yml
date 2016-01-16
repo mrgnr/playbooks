@@ -1,0 +1,13 @@
+---
+
+security_ssh_port: 22
+security_ssh_add_key: true
+security_ssh_key_path: "~/.ssh/id_rsa.pub"
+security_ssh_add_user: true
+security_ssh_user: "user"
+
+security_fail2ban_ssh_enabled: true
+security_fail2ban_ssh_port: "{{ security_ssh_port }}"
+security_fail2ban_ssh_maxretry: 3
+security_fail2ban_ssh_bantime: 3600
+security_fail2ban_ssh_ignoreip: "127.0.0.1/8"
