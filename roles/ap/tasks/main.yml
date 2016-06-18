@@ -1,0 +1,54 @@
+---
+
+- name: Install packages
+  apt: name={{ item }} state=latest update_cache=yes
+  with_items:
+    - hostapd
+    - isc-dhcp-server
+  tags: ['ap', 'ap:install']
+
+- name: Copy hostapd config file
+  template: src=hostapd.conf.j2 dest=/etc/hostapd/hostapd.conf backup=yes
+  notify:
+    - stop hostapd
+    - start hostapd
+  tags: ['ap', 'ap:configuration']
+
+- name: Set path to hostapd config file
+  lineinfile: >
+    dest='/etc/default/hostapd'
+    regexp='^DAEMON_CONF='
+    line='DAEMON_CONF="/etc/hostapd/hostapd.conf"'
+    backup=yes
+  notify:
+    - stop hostapd
+    - start hostapd
+  tags: ['ap', 'ap:configuration']
+
+- name: Copy dhcpd config file
+  template: src=dhcpd.conf.j2 dest=/etc/dhcp/dhcpd.conf backup=yes
+  notify: restart dhcp
+  tags: ['ap', 'ap:configuration']
+
+- name: Set interface for dhcpd
+  lineinfile: >
+    dest='/etc/default/isc-dhcp-server'
+    regexp='^INTERFACES='
+    line='INTERFACES="{{ ap_interface }}"'
+    backup=yes
+  notify: restart dhcp
+  tags: ['ap', 'ap:configuration']
+
+# TODO: Use blockinfile for Ansible 2.x
+- name: Configure AP interface
+  lineinfile: >
+    dest='/etc/network/interfaces'
+    line='{{ item }}'
+    backup=yes
+  with_items:
+    - 'allow-hotplug {{ ap_interface }}'
+    - 'iface {{ ap_interface }} inet static'
+    - '    address {{ ap_ip }}'
+    - '    netmask {{ ap_netmask }}'
+  notify: restart interface
+  tags: ['ap', 'ap:configuration']

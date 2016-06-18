@@ -1,0 +1,21 @@
+---
+
+# hostapd settings
+ap_interface: "wlan0"
+ap_driver: "nl80211"
+ap_ssid: "ap"
+ap_channel: 7
+ap_password: "secret"
+
+# dhcp settings
+ap_lease_time: 600
+ap_max_lease_time: 600
+ap_subnet: "192.168.42.0"
+ap_ip: "192.168.42.1"
+ap_routers: ["{{ ap_ip }}"]
+ap_netmask: "255.255.255.0"
+ap_broadcast_address: "192.168.42.255"
+ap_first_subnet_ip: "192.168.42.10"
+ap_last_subnet_ip: "192.168.42.200"
+ap_dns_servers: ["8.8.8.8", "8.8.4.4"]
+ap_domain_name: "local"

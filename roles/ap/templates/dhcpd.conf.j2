@@ -1,0 +1,13 @@
+ddns-update-style none;
+default-lease-time {{ ap_lease_time }};
+max-lease-time {{ ap_max_lease_time }};
+authoritative;
+log-facility local7;
+
+subnet {{ ap_subnet }} netmask {{ ap_netmask }} {
+    range {{ ap_first_subnet_ip }} {{ ap_last_subnet_ip }};
+    option broadcast-address {{ ap_broadcast_address }};
+    option routers {{ ap_routers | join(", ") }};
+    option domain-name-servers {{ ap_dns_servers | join(", ") }};
+    option domain-name {{ ap_domain_name }};
+}

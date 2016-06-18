@@ -1,0 +1,15 @@
+---
+
+- name: restart interface
+  shell: ifdown {{ ap_interface }} && ifup {{ ap_interface }}
+
+- name: restart dhcp
+  service: name=isc-dhcp-server state=restarted
+
+# With systemd, `service hostapd restart` fails to actually start the hostapd
+# daemon, so it's necessary to explicitly stop and start hostapd
+- name: stop hostapd
+  service: name=hostapd state=stopped
+
+- name: start hostapd
+  service: name=hostapd state=started
