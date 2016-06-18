@@ -1,0 +1,43 @@
+---
+
+- name: Install openvpn
+  apt: name=openvpn state=latest update_cache=yes
+  tags: ['openvpn', 'openvpn:install']
+
+- name: Create connection config files
+  template: src=client.ovpn.j2 dest=/etc/openvpn/{{ item.addr }}.ovpn
+  with_items: openvpn_connections
+  tags: ['openvpn', 'openvpn:configuration']
+
+- name: Set default client configuration
+  file: >
+    src='/etc/openvpn/{{ openvpn_connections[0].addr}}.ovpn'
+    dest='/etc/openvpn/client.conf'
+    state=link
+  when: openvpn_connections | length > 0
+  tags: ['openvpn', 'openvpn:configuration']
+
+- name: Create username/password file
+  copy: >
+    dest='/etc/openvpn/pass'
+    content='{{ openvpn_username }}\n{{ openvpn_password }}'
+    owner='root'
+    group='root'
+    mode='0640'
+  when: openvpn_username is defined and openvpn_password is defined
+  tags: ['openvpn', 'openvpn:configuration']
+
+- name: Create username/password files for individual connections
+  copy: >
+    dest='/etc/openvpn/{{ item.addr }}.pass'
+    content='{{ item.username }}\n{{ item.password }}'
+    owner='root'
+    group='root'
+    mode='0640'
+  with_items: openvpn_connections
+  when: item.username is defined and item.password is defined
+  tags: ['openvpn', 'openvpn:configuration']
+
+- name: Start openvpn client
+  service: name=openvpn@client state=started
+  tags: ['openvpn', 'openvpn:configuration']

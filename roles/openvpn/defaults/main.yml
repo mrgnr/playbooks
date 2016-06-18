@@ -1,0 +1,5 @@
+---
+
+openvpn_connections: []
+openvpn_username: !!null
+openvpn_password: !!null

@@ -1,0 +1,44 @@
+client
+dev {{ item.dev | default('tun') }}
+proto {{ item.proto | default('udp') }}
+remote {{ item.addr }} {{ item.port | default('1194') }}
+resolv-retry {{ item.resolv_retry | default('infinite') }}
+tun-mtu {{ item.tun_mtu | default('1500') }}
+tun-mtu-extra {{ item.tun_mtu_extra | default('32') }}
+mssfix {{ item.mssfix | default('1450') }}
+ping {{ item.ping | default('15') }}
+ping-restart {{ item.ping_restart | default('0') }}
+reneg-sec {{ item.reneg_sec | default('0') }}
+remote-cert-tls {{ item.remote_cert_tls | default('server') }}
+verb {{ item.verb | default('3') }}
+cipher {{ item.cipher | default('AES-256-CBC') }}
+key-direction {{ item.key_direction | default('1') }}
+log {{ item.log_path | default('/var/log/openvpn') }}
+auth-user-pass {% if item.username is defined and item.password is defined %}{{ item.addr }}.pass{% else %}pass{% endif %}
+
+{% if item.options is defined %}
+{% for option in item.options %}
+{{ option }}
+{% endfor %}
+{% else %}
+remote-random
+nobind
+persist-key
+persist-tun
+ping-timer-rem
+comp-lzo
+pull
+fast-io
+{% endif %}
+
+{% if item.ca %}
+<ca>
+{{ item.ca }}
+</ca>
+{% endif %}
+
+{% if item.tls_key %}
+<tls-auth>
+{{ item.tls_key }}
+</tls-auth>
+{% endif %}
