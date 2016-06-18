@@ -1,0 +1,4 @@
+---
+
+scripts: ['vpnmon']
+scripts_vpnmon_path: '/usr/local/bin/vpnmon'

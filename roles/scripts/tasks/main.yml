@@ -1,0 +1,18 @@
+---
+
+- name: Copy vpnmon script
+  copy: src=vpnmon.py dest={{ scripts_vpnmon_path }} mode=0755
+  notify: restart vpnmon
+  when: "'vpnmon' in scripts"
+  tags: ['scripts', 'scripts:vpnmon']
+
+- name: Add vpnmon service
+  template: src=vpnmon.service.j2 dest=/etc/systemd/system/vpnmon.service mode=0644
+  notify: restart vpnmon
+  when: "'vpnmon' in scripts"
+  tags: ['scripts', 'scripts:vpnmon']
+
+- name: Enable vpnmon service
+  service: name=vpnmon enabled=yes
+  when: "'vpnmon' in scripts"
+  tags: ['scripts', 'scripts:vpnmon']

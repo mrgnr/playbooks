@@ -1,0 +1,11 @@
+[Unit]
+Description=OpenVPN monitor
+After=openvpn.service
+
+[Service]
+ExecStart={{ scripts_vpnmon_path }}
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=openvpn.service

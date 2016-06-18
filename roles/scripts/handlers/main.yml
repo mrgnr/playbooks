@@ -1,0 +1,4 @@
+---
+
+- name: restart vpnmon
+  service: name=vpnmon state=restarted
