@@ -6,6 +6,6 @@
   gather_facts: True
   roles:
     - common
-    - python
     - shell
+    - python
     - vim
